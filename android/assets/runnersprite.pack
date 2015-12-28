@@ -1,0 +1,12 @@
+
+runnersprite.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+runner
+  rotate: false
+  xy: 0, 0
+  size: 740, 96
+  orig: 740, 96
+  offset: 0, 0
+  index: -1
