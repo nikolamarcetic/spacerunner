@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="15" tilewidth="32" tileheight="32" nextobjectid="8">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="15" tilewidth="32" tileheight="32" nextobjectid="13">
  <tileset firstgid="1" name="set1" tilewidth="32" tileheight="32" tilecount="12">
   <image source="StationTileset.png" trans="ffffff" width="128" height="96"/>
  </tileset>
  <tileset firstgid="13" name="set2" tilewidth="32" tileheight="32" tilecount="30">
   <image source="tileset2.png" width="192" height="160"/>
+ </tileset>
+ <tileset firstgid="43" name="set3" tilewidth="32" tileheight="32" tilecount="45">
+  <image source="obj.png" width="300" height="160"/>
  </tileset>
  <imagelayer name="bg1" y="-288">
   <image source="bg.png"/>
@@ -17,7 +20,7 @@
  </imagelayer>
  <layer name="fg" width="100" height="15">
   <data encoding="base64" compression="zlib">
-   eJztkcEKwjAQBdOq9aTxpJ561f//QjewBSlv7YqCijMwFHazSfpSSymHmVXUHtWjfk3MqV60zzN7qF7mrKWZTDav/BMAAAAAAABorkIAgHeyMdczO3Pl34uwc4cP3PdbOJon8yx6LdPe3Lkt00xWbW7KXbkN5u7X/MubqHyi7Kb63lVrRjfKPvsW0d2W/HVuw2wI9A==
+   eJztkbkOwjAQRB3OCkzFVdCCxFlwllDA//8RY8mRImtN1sFSmnnSUySv13ZmrTFmEmiFtV/rsbpV9Em12DkpZ0g1zV11PZps/vknQgghhBBCCCEyG0FCmrIIJO2yhEd4Mu3Oow97gQXs+u9asPAOMr9lC3eJPXt4yHC3m8cdPoxuHlM4g3Oh5jLtwJHXZarJyvWVuUsOI33VPTlncoaXxJ4rvGW4283jCV9GnoeUTyy7cn3slfasvLHstbOIva3ON/w07G3LKl/x0w2E
   </data>
  </layer>
  <objectgroup name="platform">
@@ -29,6 +32,15 @@
   </object>
   <object id="7" x="1408" y="288">
    <polyline points="0,0 160,0 161,13 3,16 -1,1"/>
+  </object>
+  <object id="8" x="1728" y="448">
+   <polyline points="0,0 0,32 1376,32 1376,0 0,0"/>
+  </object>
+  <object id="9" x="1952.02" y="386">
+   <polyline points="0,0 0,62 46.92,61 49.98,-1 -1.02,-1"/>
+  </object>
+  <object id="10" x="2364" y="389">
+   <polyline points="0,0 3,53 53,57 50,-3 2,-1"/>
   </object>
  </objectgroup>
 </map>

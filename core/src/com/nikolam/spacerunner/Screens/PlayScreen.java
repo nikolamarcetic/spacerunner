@@ -98,8 +98,12 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float delat){
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-            runner.body.applyLinearImpulse(new Vector2(0,4f), runner.body.getWorldCenter(), true);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            if (runner.body.getLinearVelocity().y == 0) {
+
+                runner.body.applyLinearImpulse(new Vector2(0, 4f), runner.body.getWorldCenter(), true);
+            }
+
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && runner.body.getLinearVelocity().x <= 4){
             runner.body.applyLinearImpulse(new Vector2(0.2f,0), runner.body.getWorldCenter(), true);
