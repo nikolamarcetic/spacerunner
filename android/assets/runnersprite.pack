@@ -5,8 +5,22 @@ filter: Nearest,Nearest
 repeat: none
 runner
   rotate: false
-  xy: 0, 0
+  xy: 1, 31
   size: 740, 96
   orig: 740, 96
+  offset: 0, 0
+  index: -1
+alien
+  rotate: false
+  xy: 743, 63
+  size: 260, 64
+  orig: 260, 64
+  offset: 0, 0
+  index: -1
+zbtn
+  rotate: false
+  xy: 743, 1
+  size: 260, 60
+  orig: 260, 60
   offset: 0, 0
   index: -1

@@ -1,8 +1,10 @@
 package com.nikolam.spacerunner.Sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -29,9 +31,9 @@ public class Runner extends Sprite {
     private float stateTimer;
     private boolean runningRight;
 
-    public Runner(World world, PlayScreen screen){
+    public Runner(PlayScreen screen){
         super(screen.getAtlas().findRegion("runner"));
-        this.world = world;
+        this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
@@ -39,16 +41,17 @@ public class Runner extends Sprite {
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
         for (int i = 1; i < 7;i++){
-            frames.add(new TextureRegion(getTexture(),i*82, 0,82,96));
+            frames.add(new TextureRegion(getTexture(),i*82, 30,82,96));
         }
         runnerRun = new Animation(0.1f, frames);
         frames.clear();
 
-        runnerJump = new TextureRegion(getTexture(),574,0,82,96);
-        runnerFall = new TextureRegion(getTexture(),656,0,82,96);
+        runnerJump = new TextureRegion(getTexture(),574,30,82,96);
+        runnerFall = new TextureRegion(getTexture(),656,30,82,96);
 
         defineRunner();
-        runnerStand = new TextureRegion(getTexture(),0,0,82,96);
+        runnerStand = new TextureRegion(getTexture(),0,30,82,96);
+
         setBounds(0,0,52/SpaceRunner.PPM,64/SpaceRunner.PPM);
         setRegion(runnerStand);
     }
@@ -100,17 +103,28 @@ public class Runner extends Sprite {
             return State.STANDING;
     }
 
+    public void gotHit(){
+        Gdx.app.log("AAA", "AAA");
+    }
+
     public void defineRunner(){
         BodyDef bdef = new BodyDef();
-        bdef.position.set(32/SpaceRunner.PPM,64/SpaceRunner.PPM);
+        bdef.position.set(32/SpaceRunner.PPM,96/SpaceRunner.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         body = world.createBody(bdef);
 
+
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(32/SpaceRunner.PPM);
+        shape.setRadius(16/SpaceRunner.PPM);
+        fdef.filter.categoryBits = SpaceRunner.RUNNER_BIT;
+        fdef.filter.maskBits = SpaceRunner.GROUND_BIT | SpaceRunner.ENEMY_BIT | SpaceRunner.OBJECT_BIT | SpaceRunner.DEATH_BIT | SpaceRunner.WIN_BIT;
 
         fdef.shape = shape;
         body.createFixture(fdef);
+        shape.setPosition(new Vector2(0,-16/SpaceRunner.PPM));
+        fdef.shape = shape;
+        body.createFixture(fdef).setUserData(this);
+
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="15" tilewidth="32" tileheight="32" nextobjectid="13">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="15" tilewidth="32" tileheight="32" nextobjectid="33">
  <tileset firstgid="1" name="set1" tilewidth="32" tileheight="32" tilecount="12">
   <image source="StationTileset.png" trans="ffffff" width="128" height="96"/>
  </tileset>
@@ -36,11 +36,21 @@
   <object id="8" x="1728" y="448">
    <polyline points="0,0 0,32 1376,32 1376,0 0,0"/>
   </object>
-  <object id="9" x="1952.02" y="386">
-   <polyline points="0,0 0,62 46.92,61 49.98,-1 -1.02,-1"/>
-  </object>
-  <object id="10" x="2364" y="389">
-   <polyline points="0,0 3,53 53,57 50,-3 2,-1"/>
-  </object>
+ </objectgroup>
+ <objectgroup name="objects">
+  <object id="14" x="1955" y="386" width="44" height="61"/>
+  <object id="17" x="2370" y="384.5" width="44" height="61"/>
+ </objectgroup>
+ <objectgroup name="win">
+  <object id="18" x="3023" y="353" width="56" height="93"/>
+ </objectgroup>
+ <objectgroup name="ps">
+  <object id="23" x="-304" y="48" width="296" height="488"/>
+  <object id="28" x="3072" y="-40" width="112" height="512"/>
+ </objectgroup>
+ <objectgroup name="death">
+  <object id="29" x="418.667" y="434.667" width="58.6667" height="18.6667"/>
+  <object id="31" x="644" y="460" width="56" height="18.6667"/>
+  <object id="32" x="1669.33" y="452" width="53.3333" height="25.3333"/>
  </objectgroup>
 </map>

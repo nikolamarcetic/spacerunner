@@ -3,6 +3,7 @@ package com.nikolam.spacerunner.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -29,8 +31,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.nikolam.spacerunner.SpaceRunner;
+import com.nikolam.spacerunner.Sprites.Enemy;
 import com.nikolam.spacerunner.Sprites.Runner;
 import com.nikolam.spacerunner.Util.B2WorldCreator;
+import com.nikolam.spacerunner.Util.WorldContactListener;
 
 /**
  * Created by Nikola on 12/27/2015.
@@ -56,6 +60,7 @@ public class PlayScreen implements Screen {
     private TextureAtlas atlas;
 
     private Runner runner;
+    private Enemy enemy;
 
     public PlayScreen(SpaceRunner game){
         atlas = new TextureAtlas("runnersprite.pack");
@@ -78,11 +83,13 @@ public class PlayScreen implements Screen {
         b2dr = new Box2DDebugRenderer();
 
 
-        new B2WorldCreator(world,map);
+        new B2WorldCreator(this);
 
-        runner = new Runner(world, this);
+        runner = new Runner(this);
 
+        world.setContactListener(new WorldContactListener());
 
+        enemy = new Enemy(this,20.512f, .64f);
 
 
     }
@@ -112,6 +119,8 @@ public class PlayScreen implements Screen {
         }
     }
 
+
+
     public void update(float delta){
         handleInput(delta);
 
@@ -119,8 +128,12 @@ public class PlayScreen implements Screen {
 
         camera.position.x = runner.body.getPosition().x;
 
-        runner.update(delta);
+        float startX = camera.viewportWidth/2;
+        float startY = camera.viewportHeight/2;
+        boundary(camera, startX,startY,32-(4*0.32f) - startX*2, 480);
 
+        runner.update(delta);
+        enemy.update(delta);
         camera.update();
         renderer.setView(camera);
     }
@@ -138,11 +151,20 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         runner.draw(game.batch);
+        enemy.draw(game.batch);
         game.batch.end();
 
 
-        b2dr.render(world,camera.combined);
+        b2dr.render(world, camera.combined);
 
+    }
+
+    public TiledMap getMap(){
+        return map;
+    }
+
+    public World getWorld(){
+        return world;
     }
 
     @Override
@@ -165,9 +187,29 @@ public class PlayScreen implements Screen {
 
     }
 
+    public static void boundary(Camera camera, float startX, float startY, float with, float height) {
+        Vector3 position = camera.position;
+
+        if(position.x < startX){
+            position.x = startX;
+        }
+        if(position.y < startY){
+            position.y = startY;
+        }
+        if(position.x >startX + with){
+            position.x = startX + with;
+        }
+        if(position.y > startY + height){
+            position.y = startY + height;
+        }
+
+        camera.position.set(position);
+        camera.update();
+    }
+
     @Override
     public void dispose() {
-        game.dispose();
+
         map.dispose();
         renderer.dispose();
         b2dr.dispose();
