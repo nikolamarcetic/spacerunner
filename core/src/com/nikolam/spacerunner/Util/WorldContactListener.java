@@ -1,5 +1,6 @@
 package com.nikolam.spacerunner.Util;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -23,19 +24,56 @@ public class WorldContactListener implements ContactListener {
         switch (cDef){
             case SpaceRunner.RUNNER_BIT | SpaceRunner.ENEMY_BIT:
                 if(fixA.getFilterData().categoryBits == SpaceRunner.RUNNER_BIT){
-                    ((Runner)fixA.getUserData()).gotHit();
-                }
+                    try{
+                        ((Runner)fixA.getUserData()).runnerDie();
+                    }catch (Exception e){}
 
+                }
                 else if(fixB.getFilterData().categoryBits == SpaceRunner.RUNNER_BIT){
-                    ((Runner)fixB.getUserData()).gotHit();
+
+                    try{
+                        ((Runner)fixB.getUserData()).runnerDie();
+                    }catch (Exception e){}
+
                 }
                 break;
             case SpaceRunner.ENEMY_BIT | SpaceRunner.OBJECT_BIT:
                 if(fixA.getFilterData().categoryBits == SpaceRunner.ENEMY_BIT){
                     ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
                 }
-                else if(fixB.getFilterData().categoryBits == SpaceRunner.ENEMY_BIT){
-                    ((Enemy)fixB.getUserData()).reverseVelocity(true,false);
+                else {
+
+                    try{
+                        ((Enemy)fixB.getUserData()).reverseVelocity(true,false);
+                    }catch (Exception e){}
+                   // ((Enemy)fixB.getUserData()).reverseVelocity(true,false);
+                }
+                break;
+            case SpaceRunner.RUNNER_BIT | SpaceRunner.DEATH_BIT:
+                if(fixA.getFilterData().categoryBits == SpaceRunner.RUNNER_BIT){
+                    ((Runner)fixA.getUserData()).runnerDie();
+                    Gdx.app.log("Die", "DIe");
+
+                }
+                else {
+                    Gdx.app.log("Die", "DIe");
+                    ((Runner)fixB.getUserData()).runnerDie();
+                }
+                break;
+
+            case SpaceRunner.RUNNER_BIT | SpaceRunner.WIN_BIT:
+                if(fixA.getFilterData().categoryBits == SpaceRunner.RUNNER_BIT){
+                    ((Runner)fixA.getUserData()).runnerWin();
+                    Gdx.app.log("Die", "DIe");
+
+                }
+                else {
+                    try{
+                        ((Runner)fixB.getUserData()).runnerWin();
+                        Gdx.app.log("WINs", ((Runner) fixB.getUserData()).currentState.toString());
+                    }catch (Exception e){}
+
+
                 }
                 break;
         }

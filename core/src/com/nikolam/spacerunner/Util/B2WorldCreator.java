@@ -62,6 +62,7 @@ public class B2WorldCreator {
             shape.setAsBox(rect.getWidth() / 2 / SpaceRunner.PPM, rect.getHeight() / 2 / SpaceRunner.PPM);
             fdef.shape = shape;
             fdef.filter.categoryBits = SpaceRunner.OBJECT_BIT;
+            fdef.filter.maskBits = SpaceRunner.RUNNER_BIT | SpaceRunner.ENEMY_BIT;
 
             body.createFixture(fdef).setUserData(this);
         }

@@ -1,6 +1,7 @@
 package com.nikolam.spacerunner.Sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,7 +19,7 @@ import com.nikolam.spacerunner.SpaceRunner;
  * Created by Nikola on 12/28/2015.
  */
 public class Runner extends Sprite {
-    public enum State {STANDING, RUNNING, JUMPING, FALLING};
+    public enum State {STANDING, RUNNING, JUMPING, FALLING, DEATH, WIN};
     public State currentState;
     public State previousState;
     public World world;
@@ -76,6 +77,8 @@ public class Runner extends Sprite {
                 region = runnerFall;
                 break;
             case STANDING:
+            case DEATH:
+            case WIN:
                 default:
                     region = runnerStand;
                     break;
@@ -93,6 +96,9 @@ public class Runner extends Sprite {
     }
 
     public State getState(){
+        if(currentState != State.WIN){
+
+        if(currentState != State.DEATH){
         if(body.getLinearVelocity().y>0)
             return State.JUMPING;
         else if(body.getLinearVelocity().y<0)
@@ -101,11 +107,25 @@ public class Runner extends Sprite {
             return State.RUNNING;
         else
             return State.STANDING;
+        }else
+            return State.DEATH;
+        }else
+            return State.WIN;
     }
 
-    public void gotHit(){
-        Gdx.app.log("AAA", "AAA");
+
+
+    public void runnerDie(){
+        currentState = State.DEATH;
+
+
     }
+
+    public void runnerWin(){
+        currentState = State.WIN;
+    }
+
+
 
     public void defineRunner(){
         BodyDef bdef = new BodyDef();

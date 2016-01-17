@@ -56,7 +56,7 @@ public class Enemy extends Sprite {
         stateTime += delta;
         setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
         setRegion(levAnimation.getKeyFrame(stateTime, true));
-        body.setLinearVelocity(velocity);
+       // body.setLinearVelocity(velocity);
     }
 
     public void defineEnemy(){

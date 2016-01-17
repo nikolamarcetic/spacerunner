@@ -3,10 +3,12 @@ package com.nikolam.spacerunner.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
@@ -26,6 +28,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -59,8 +63,17 @@ public class PlayScreen implements Screen {
 
     private TextureAtlas atlas;
 
-    private Runner runner;
+    public Runner runner;
     private Enemy enemy;
+
+
+    TextButton.TextButtonStyle buttonStyle;
+    TextButton button;
+    TextButton buttonExit;
+    Skin skin;
+    BitmapFont font40;
+
+    public Music music;
 
     public PlayScreen(SpaceRunner game){
         atlas = new TextureAtlas("runnersprite.pack");
@@ -91,12 +104,21 @@ public class PlayScreen implements Screen {
 
         enemy = new Enemy(this,20.512f, .64f);
 
+        skin = new Skin();
+
+        skin.addRegions(atlas);
+
+        music = game.manager.get("audio/song2.ogg", Music.class);
+        music.setLooping(true);
+        music.play();
 
     }
 
     public TextureAtlas getAtlas(){
         return atlas;
     }
+
+
 
 
     @Override
@@ -122,6 +144,12 @@ public class PlayScreen implements Screen {
 
 
     public void update(float delta){
+
+        if(runner.currentState == Runner.State.DEATH || runner.currentState == Runner.State.WIN) {
+            game.setScreen(game.endScreen);
+        }
+
+
         handleInput(delta);
 
         world.step(1 / 60f, 6, 2);
@@ -130,7 +158,7 @@ public class PlayScreen implements Screen {
 
         float startX = camera.viewportWidth/2;
         float startY = camera.viewportHeight/2;
-        boundary(camera, startX,startY,32-(4*0.32f) - startX*2, 480);
+        boundary(camera, startX, startY, 32 - (4 * 0.32f) - startX * 2, 480);
 
         runner.update(delta);
         enemy.update(delta);
@@ -141,7 +169,6 @@ public class PlayScreen implements Screen {
     @Override
     public void render(float delta) {
         update(delta);
-
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -155,7 +182,7 @@ public class PlayScreen implements Screen {
         game.batch.end();
 
 
-        b2dr.render(world, camera.combined);
+        //b2dr.render(world, camera.combined);
 
     }
 
